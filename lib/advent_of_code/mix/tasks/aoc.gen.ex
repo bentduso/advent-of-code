@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Aoc.Gen do
   @moduledoc """
-  Generates the necessary solution and test files for an Advent of Code challenge.
+  Generates the necessary solution, input and test files for an Advent of Code challenge.
 
   This task requires the day of the challenge as an argument.
 
@@ -22,6 +22,7 @@ defmodule Mix.Tasks.Aoc.Gen do
 
   ```text
   lib/advent_of_code/Y2024/day_20.ex
+  priv/inputs/Y2024/day20.txt
   test/advent_of_code/Y2024/day_20_test.exs
   ```
   """
@@ -103,11 +104,13 @@ defmodule Mix.Tasks.Aoc.Gen do
   defp files_to_generate(assigns) do
     [
       {solution_path(assigns), eval_template("solution.ex.eex", assigns)},
+      {input_path(assigns), "# Paste your puzzle input here"},
       {test_path(assigns), eval_template("test.exs.eex", assigns)}
     ]
   end
 
   defp solution_path(%{year: year, day: day}), do: "lib/advent_of_code/Y#{year}/day_#{day}.ex"
+  defp input_path(%{year: year, day: day}), do: "priv/inputs/Y#{year}/day#{day}.txt"
   defp test_path(%{year: year, day: day}), do: "test/advent_of_code/Y#{year}/day_#{day}_test.exs"
 
   defp eval_template(template_name, assigns) do
