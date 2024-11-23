@@ -18,7 +18,7 @@ defmodule Mix.Tasks.Aoc.Gen do
 
       $ mix aoc.gen 20 --year 2024
 
-  It would generate the following modules:
+  It would generate the following files:
 
   ```text
   lib/advent_of_code/Y2024/day_20.ex
