@@ -1,0 +1,7 @@
+defmodule AdventOfCode.Y<%= @year %>.Day<%= @day %> do
+  def part_1(_args) do
+  end
+
+  def part_2(_args) do
+  end
+end
