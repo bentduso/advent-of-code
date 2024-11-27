@@ -1,14 +1,14 @@
 defmodule Mix.Tasks.Aoc.Gen do
   @moduledoc """
-  Generates the necessary solution, input and test files for an Advent of Code challenge.
+  Generates the necessary solution, input and test files for an Advent of Code puzzle.
 
-  This task requires the day of the challenge as an argument.
+  This task requires the day of the puzzle as an argument.
 
       $ mix aoc.gen DAY [--year YEAR]
 
   ## Options
 
-    * `--year` - specifies the year associated with the challenge.
+    * `--year` - specifies the year associated with the puzzle.
 
   ## Examples
 
@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Aoc.Gen do
   ```
   """
 
-  @shortdoc "Generates template files for an Advent of Code challenge"
+  @shortdoc "Generates template files for an Advent of Code puzzle"
 
   use Mix.Task
   import Mix.Generator
@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Aoc.Gen do
   @impl true
   def run(argv) do
     case parse_args(argv) do
-      {:ok, day, year} -> generate_challenge_files(day, year)
+      {:ok, day, year} -> generate_puzzle_files(day, year)
       {:error, message} -> Mix.raise(message)
     end
   end
@@ -93,7 +93,7 @@ defmodule Mix.Tasks.Aoc.Gen do
     {:error, "The year must be at least #{@aoc_start_year}, when Advent of Code began"}
   end
 
-  defp generate_challenge_files(day, year) do
+  defp generate_puzzle_files(day, year) do
     day_padded = String.pad_leading(to_string(day), 2, "0")
     assigns = [day: day_padded, year: year]
 
@@ -114,7 +114,7 @@ defmodule Mix.Tasks.Aoc.Gen do
       assigns
     )
 
-    check_challenge_availability(day, year)
+    check_puzzle_availability(day, year)
   end
 
   defp solution_path(day: day, year: year), do: "lib/advent_of_code/Y#{year}/day_#{day}.ex"
@@ -123,7 +123,7 @@ defmodule Mix.Tasks.Aoc.Gen do
 
   defp test_path(day: day, year: year), do: "test/advent_of_code/Y#{year}/day_#{day}_test.exs"
 
-  defp check_challenge_availability(day, year) do
+  defp check_puzzle_availability(day, year) do
     url = "https://adventofcode.com/#{year}/day/#{day}"
 
     case Req.get(url) do
@@ -133,7 +133,7 @@ defmodule Mix.Tasks.Aoc.Gen do
           "\nwarning: ",
           :reset,
           """
-          the challenge is currently unavailable, but it can be accessed at
+          the puzzle is currently unavailable, but it can be accessed at
 
               #{url}
 
@@ -142,10 +142,10 @@ defmodule Mix.Tasks.Aoc.Gen do
         ])
 
       {:ok, _} ->
-        Mix.Shell.IO.info("\nAccess the challenge at #{url}.")
+        Mix.Shell.IO.info("\nAccess the puzzle at #{url}.")
 
       {:error, _} ->
-        Mix.Shell.IO.error("\nCould not fetch challenge availability.")
+        Mix.Shell.IO.error("\nCould not fetch puzzle availability.")
     end
   end
 end

@@ -1,3 +1,3 @@
 # Advent of Code
 
-This repository contains my solutions to [Advent of Code](https://adventofcode.com) challenges, implemented in Elixir!
+This repository contains my solutions to [Advent of Code](https://adventofcode.com) puzzles, implemented in Elixir!
