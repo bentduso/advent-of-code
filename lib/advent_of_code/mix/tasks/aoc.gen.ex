@@ -30,11 +30,12 @@ defmodule Mix.Tasks.Aoc.Gen do
   @shortdoc "Generates template files for an Advent of Code challenge"
 
   use Mix.Task
+  import Mix.Generator
 
+  @requirements ["app.start"]
   @switches [year: :integer]
   @valid_days 1..25
   @aoc_start_year 2015
-
   @templates_path "priv/templates/aoc.gen"
 
   @impl true
@@ -94,41 +95,57 @@ defmodule Mix.Tasks.Aoc.Gen do
 
   defp generate_challenge_files(day, year) do
     day_padded = String.pad_leading(to_string(day), 2, "0")
-    assigns = %{year: year, day: day_padded}
+    assigns = [day: day_padded, year: year]
 
-    assigns
-    |> files_to_generate()
-    |> Enum.each(&create_file/1)
+    copy_template(
+      Path.join(@templates_path, "solution.ex.eex"),
+      solution_path(assigns),
+      assigns
+    )
+
+    create_file(
+      input_path(assigns),
+      "# Paste your puzzle input here"
+    )
+
+    copy_template(
+      Path.join(@templates_path, "test.exs.eex"),
+      test_path(assigns),
+      assigns
+    )
+
+    check_challenge_availability(day, year)
   end
 
-  defp files_to_generate(assigns) do
-    [
-      {solution_path(assigns), eval_template("solution.ex.eex", assigns)},
-      {input_path(assigns), "# Paste your puzzle input here"},
-      {test_path(assigns), eval_template("test.exs.eex", assigns)}
-    ]
-  end
+  defp solution_path(day: day, year: year), do: "lib/advent_of_code/Y#{year}/day_#{day}.ex"
 
-  defp solution_path(%{year: year, day: day}), do: "lib/advent_of_code/Y#{year}/day_#{day}.ex"
-  defp input_path(%{year: year, day: day}), do: "priv/inputs/Y#{year}/day#{day}.txt"
-  defp test_path(%{year: year, day: day}), do: "test/advent_of_code/Y#{year}/day_#{day}_test.exs"
+  defp input_path(day: day, year: year), do: "priv/inputs/Y#{year}/day#{day}.txt"
 
-  defp eval_template(template_name, assigns) do
-    Application.get_application(__MODULE__)
-    |> Application.app_dir(@templates_path)
-    |> Path.join(template_name)
-    |> EEx.eval_file(assigns: assigns)
-  end
+  defp test_path(day: day, year: year), do: "test/advent_of_code/Y#{year}/day_#{day}_test.exs"
 
-  defp create_file({path, content}) do
-    File.mkdir_p!(Path.dirname(path))
+  defp check_challenge_availability(day, year) do
+    url = "https://adventofcode.com/#{year}/day/#{day}"
 
-    case File.write(path, content) do
-      :ok ->
-        Mix.shell().info([:green, "* created ", :reset, path])
+    case Req.get(url) do
+      {:ok, resp} when resp.status == 404 ->
+        Mix.Shell.IO.info([
+          :light_yellow,
+          "\nwarning: ",
+          :reset,
+          """
+          the challenge is currently unavailable, but it can be accessed at
 
-      {:error, reason} ->
-        Mix.raise("Failed to create file #{path}: #{:file.format_error(reason)}")
+              #{url}
+
+          once the link is enabled.
+          """
+        ])
+
+      {:ok, _} ->
+        Mix.Shell.IO.info("\nAccess the challenge at #{url}.")
+
+      {:error, _} ->
+        Mix.Shell.IO.error("\nCould not fetch challenge availability.")
     end
   end
 end
