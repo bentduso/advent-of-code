@@ -3,15 +3,27 @@ defmodule AdventOfCode.Y<%= @year %>.Day<%= @day %>Test do
 
   import AdventOfCode.Y<%= @year %>.Day<%= @day %>
 
-  test "part 1" do
-    input = nil
-    result = part_1(input)
-    assert result
+  describe "part_1" do
+    test "foo" do
+      result = part_1(_input)
+      assert result
+    end
+
+    test "bar" do
+      result = part_1(_input)
+      assert result
+    end
   end
 
-  test "part 2" do
-    input = nil
-    result = part_2(input)
-    assert result
+  describe "part_2" do
+    test "foo" do
+      result = part_2(_input)
+      assert result
+    end
+
+    test "bar" do
+      result = part_2(_input)
+      assert result
+    end
   end
 end
