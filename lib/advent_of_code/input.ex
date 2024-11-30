@@ -1,4 +1,4 @@
-defmodule AdventOfCode.InputHelper do
+defmodule AdventOfCode.Input do
   @moduledoc """
   This module contains helper functions for reading and parsing input
   files from Advent of Code puzzles.
@@ -29,10 +29,10 @@ defmodule AdventOfCode.InputHelper do
 
   ## Examples
 
-      iex> AdventOfCode.InputHelper.as_lines("1000\n2000\n\n4000\n5000\n")
+      iex> AdventOfCode.Input.as_lines("1000\n2000\n\n4000\n5000\n")
       ["1000", "2000", "4000", "5000"]
 
-      iex> AdventOfCode.InputHelper.as_lines("up\nup\nleft\nright\ndown\n")
+      iex> AdventOfCode.Input.as_lines("up\nup\nleft\nright\ndown\n")
       ["up", "up", "left", "right", "down"]
   """
   @spec as_lines(binary()) :: [String.t()]
@@ -43,10 +43,10 @@ defmodule AdventOfCode.InputHelper do
 
   ## Examples
 
-      iex> AdventOfCode.InputHelper.as_integers("199\n200\n208\n210\n200\n207")
+      iex> AdventOfCode.Input.as_integers("199\n200\n208\n210\n200\n207")
       [199, 200, 208, 210, 200, 207]
 
-      iex> AdventOfCode.InputHelper.as_integers("-2\n-1\n0\n1\n2\n3")
+      iex> AdventOfCode.Input.as_integers("-2\n-1\n0\n1\n2\n3")
       [-2, -1, 0, 1, 2, 3]
   """
   @spec as_integers(binary()) :: [integer()]
@@ -61,10 +61,10 @@ defmodule AdventOfCode.InputHelper do
 
   ## Examples
 
-      iex> AdventOfCode.InputHelper.as_floats("1.5\n2.3\n4.7")
+      iex> AdventOfCode.Input.as_floats("1.5\n2.3\n4.7")
       [1.5, 2.3, 4.7]
 
-      iex> AdventOfCode.InputHelper.as_floats("-1.5\n0.0\n3.14\n2.71")
+      iex> AdventOfCode.Input.as_floats("-1.5\n0.0\n3.14\n2.71")
       [-1.5, 0.0, 3.14, 2.71]
   """
   @spec as_floats(binary()) :: [float()]
@@ -80,10 +80,10 @@ defmodule AdventOfCode.InputHelper do
 
   ## Examples
 
-      iex> AdventOfCode.InputHelper.as_grid("..##.\n#...#\n.#.#.\n..#..")
+      iex> AdventOfCode.Input.as_grid("..##.\n#...#\n.#.#.\n..#..")
       [~c"..##.", ~c"#...#", ~c".#.#.", ~c"..#.."]
 
-      iex> AdventOfCode.InputHelper.as_grid("12345\n67890\nABCDE\nFGHIJ")
+      iex> AdventOfCode.Input.as_grid("12345\n67890\nABCDE\nFGHIJ")
       [~c"12345", ~c"67890", ~c"ABCDE", ~c"FGHIJ"]
 
   """
