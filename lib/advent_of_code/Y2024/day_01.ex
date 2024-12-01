@@ -7,14 +7,13 @@ defmodule AdventOfCode.Y2024.Day01 do
     |> calculate_total_distance()
   end
 
-  def parse_input(input) do
+  defp parse_input(input) do
     input
     |> Input.as_lines()
-    |> Enum.map(fn line ->
+    |> Enum.reduce({[], []}, fn line, {left_acc, right_acc} ->
       [left, right] = String.split(line, ~r{\s+})
-      {String.to_integer(left), String.to_integer(right)}
+      {[String.to_integer(left) | left_acc], [String.to_integer(right) | right_acc]}
     end)
-    |> Enum.unzip()
   end
 
   defp calculate_total_distance({left, right}) do
