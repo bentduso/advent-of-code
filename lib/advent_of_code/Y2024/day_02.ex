@@ -10,7 +10,7 @@ defmodule AdventOfCode.Y2024.Day02 do
   def parse_input(input) do
     input
     |> Input.as_lines()
-    |> Enum.map(fn line ->
+    |> Stream.map(fn line ->
       line
       |> String.split(" ")
       |> Enum.map(&String.to_integer/1)
